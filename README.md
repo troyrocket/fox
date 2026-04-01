@@ -1,27 +1,49 @@
-# DesktopFox
+<p align="center">
+  <h1 align="center">Desktop Fox</h1>
+  <p align="center">
+    A 3D AI companion on your macOS desktop that chats with you and saves you money.
+  </p>
+</p>
 
-> A 3D AI companion that lives on your macOS desktop — and saves you money.
+<p align="center">
+  <a href="#features">Features</a> &nbsp;&bull;&nbsp;
+  <a href="#getting-started">Getting Started</a> &nbsp;&bull;&nbsp;
+  <a href="#controls">Controls</a> &nbsp;&bull;&nbsp;
+  <a href="#architecture">Architecture</a> &nbsp;&bull;&nbsp;
+  <a href="#license">License</a>
+</p>
 
-She floats transparently over your workspace, chats with you (powered by Claude), and manages your subscriptions. She watches your emails, finds subscriptions you forgot about, and helps you cancel them — all with your approval.
+---
 
-## What It Does
+## Features
 
-**Desktop Companion** — A 3D fox-girl rendered in SceneKit, always on top, click-through transparent. Drag her around, rotate, zoom, or click her head to chat.
+### Desktop Companion
 
-**Subscription Agent** — Forward your subscription emails to the agent. It parses the service, price, and usage signals, then sends you a Telegram message: *"Loom $12.5/mo — 0 videos in 4 weeks. Cancel?"*. One tap to confirm, and the agent handles the rest via browser automation.
+- **3D Character** — A fox-girl model rendered via SceneKit, floating transparently on your desktop
+- **Click-Through** — Only the character intercepts clicks; everything else passes through to your workspace
+- **Gesture Control** — Drag to move, pinch to zoom, two-finger scroll to rotate 360 degrees
+- **AI Chat** — Click her head to open a Claude-powered chat window with its own personality and memory
 
-## Quick Start
+### Subscription Agent
+
+- **Email Monitoring** — Forward subscription emails to an AgentMail inbox for automatic parsing
+- **Smart Analysis** — Claude extracts service name, price, billing cycle, and usage signals
+- **Telegram Alerts** — Receive formatted analysis with action buttons: Cancel / Keep / Review
+- **Browser Automation** — Playwright navigates cancellation flows with screenshots at every step
+- **Human in the Loop** — Every destructive action requires your explicit approval
+
+## Getting Started
 
 ### Desktop Companion
 
 ```bash
 cd desktop-girl
+
 export ANTHROPIC_API_KEY=sk-ant-...
 
-# Compile
-swiftc -framework AppKit -framework SceneKit -framework Foundation -o desktop-girl main.swift
+swiftc -framework AppKit -framework SceneKit -framework Foundation \
+  -o desktop-girl main.swift
 
-# Run
 ./desktop-girl ./model/foxgirl_new.usdz
 ```
 
@@ -29,58 +51,74 @@ swiftc -framework AppKit -framework SceneKit -framework Foundation -o desktop-gi
 
 ```bash
 pip install -r requirements.txt
+```
 
-# Set up .env:
-# ANTHROPIC_API_KEY, TELEGRAM_BOT_TOKEN, TELEGRAM_CHAT_ID, AGENTMAIL_API_KEY
+Create a `.env` file with the following keys:
 
-python main.py          # Watch mode (polls emails + Telegram bot)
-python main.py --once   # Single check
+```
+ANTHROPIC_API_KEY=sk-ant-...
+TELEGRAM_BOT_TOKEN=...
+TELEGRAM_CHAT_ID=...
+AGENTMAIL_API_KEY=...
+```
+
+```bash
+python main.py            # Watch mode — polls emails + Telegram bot
+python main.py --once     # Single check
 ```
 
 ## Controls
 
 | Action | Input |
-|--------|-------|
-| **Move** | Drag the model |
-| **Rotate** | Click model to focus, then two-finger scroll |
-| **Zoom** | Click model to focus, then pinch |
-| **Chat** | Click her head |
-| **Close chat** | Esc or click outside |
-| **Unfocus** | Click anywhere outside the model |
+|:-------|:------|
+| Move | Drag the model |
+| Rotate | Click model to focus, then two-finger scroll |
+| Zoom | Click model to focus, then pinch |
+| Chat | Click her head |
+| Close chat | `Esc` or click outside the chat window |
+| Unfocus | Click anywhere outside the model |
 
 ## How the Agent Works
 
 ```
-You forward a subscription email
-        ↓
-Claude parses it (service, price, billing cycle, usage)
-        ↓
-Telegram sends you the analysis + action buttons
-        ↓
-You tap: Cancel / Keep / Review
-        ↓
-Browser agent navigates the cancellation flow
+Forward a subscription email
+       │
+       ▼
+Claude parses it
+(service, price, billing cycle, usage signals)
+       │
+       ▼
+Telegram sends analysis + action buttons
+"Loom $12.5/mo — 0 videos in 4 weeks. Cancel?"
+       │
+       ▼
+You decide: Cancel / Keep / Review
+       │
+       ▼
+Browser agent handles cancellation
 Screenshots at every step — you confirm before the final click
 ```
 
-Every destructive action requires your explicit approval. The agent never cancels anything on its own.
+## Architecture
 
-## Tech Stack
-
-| | |
-|---|---|
-| **3D Engine** | SceneKit (macOS native) |
-| **AI** | Claude Sonnet 4 (agent) + Haiku (parsing) |
-| **Desktop App** | Swift + AppKit |
-| **Browser Automation** | Playwright |
-| **Email** | AgentMail |
-| **Notifications** | Telegram Bot |
+| Component | Technology |
+|:----------|:-----------|
+| 3D Rendering | SceneKit (macOS native) |
+| Desktop App | Swift + AppKit |
+| AI Chat | Claude Sonnet 4 |
+| Email Parsing | Claude Haiku |
+| Agent Framework | Claude tool-use loop |
+| Browser Automation | Playwright |
+| Email Ingestion | AgentMail |
+| User Notifications | Telegram Bot |
 
 ## Requirements
 
 - macOS 14.0+
-- Anthropic API key
-- For the subscription agent: Telegram Bot token, AgentMail API key
+- [Anthropic API key](https://console.anthropic.com/)
+- For the subscription agent:
+  - Telegram Bot token
+  - AgentMail API key
 
 ## License
 
