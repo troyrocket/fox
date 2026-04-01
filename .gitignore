@@ -1,0 +1,12 @@
+.env
+__pycache__/
+*.pyc
+.DS_Store
+desktop-pet/desktop-pet
+desktop-pet/model/blend_source/
+desktop-pet/model/anime-fox-girl.zip
+desktop-pet/model/foxgirl_baked.usdz
+/tmp/
+.processed_messages.json
+*.png
+Anime_fox_girl.usdz
