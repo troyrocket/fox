@@ -80,24 +80,12 @@ python main.py --once     # Single check
 
 ## How the Agent Works
 
-```
-Forward a subscription email
-       │
-       ▼
-Claude parses it
-(service, price, billing cycle, usage signals)
-       │
-       ▼
-Telegram sends analysis + action buttons
-"Loom $12.5/mo — 0 videos in 4 weeks. Cancel?"
-       │
-       ▼
-You decide: Cancel / Keep / Review
-       │
-       ▼
-Browser agent handles cancellation
-Screenshots at every step — you confirm before the final click
-```
+1. **Detect** — You forward a subscription email to the AgentMail inbox
+2. **Parse** — Claude extracts service name, price, billing cycle, and usage signals
+3. **Alert** — Telegram sends you the analysis: *"Loom $12.5/mo — 0 videos in 4 weeks. Cancel?"*
+4. **Decide** — You tap Cancel, Keep, or Review
+5. **Execute** — Browser agent navigates the cancellation flow with screenshots at every step
+6. **Confirm** — You approve the final action before anything is cancelled
 
 ## Architecture
 
