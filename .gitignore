@@ -12,3 +12,6 @@ desktop-pet/model/foxgirl_baked.usdz
 .processed_messages.json
 *.png
 Anime_fox_girl.usdz
+lil-agents/
+apple-silicon-accelerometer/
+desktop-girl/accel-helper

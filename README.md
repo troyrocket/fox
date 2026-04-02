@@ -1,7 +1,7 @@
 <p align="center">
   <h1 align="center">Desktop Fox</h1>
   <p align="center">
-    A 3D AI companion on your macOS desktop that chats with you and saves you money.
+    A 3D AI companion on your macOS desktop. She chats, she reacts, she screams when you slap your MacBook.
   </p>
 </p>
 
@@ -10,6 +10,7 @@
   <a href="#getting-started">Getting Started</a> &nbsp;&bull;&nbsp;
   <a href="#controls">Controls</a> &nbsp;&bull;&nbsp;
   <a href="#architecture">Architecture</a> &nbsp;&bull;&nbsp;
+  <a href="#roadmap">Roadmap</a> &nbsp;&bull;&nbsp;
   <a href="#license">License</a>
 </p>
 
@@ -22,9 +23,10 @@
 - **3D Character** — A fox-girl model rendered via SceneKit, floating transparently on your desktop
 - **Click-Through** — Only the character intercepts clicks; everything else passes through to your workspace
 - **Gesture Control** — Drag to move, pinch to zoom, two-finger scroll to rotate 360 degrees
-- **AI Chat** — Click her head to open a Claude-powered chat window with its own personality and memory
+- **AI Chat** — Double-click to open a Claude Code terminal with her own personality and memory
+- **Slap Reaction** — Slap your MacBook and she screams back with anime voice effects and comic speech bubbles (uses Apple Silicon accelerometer via IOKit HID)
 
-### Subscription Agent
+### Subscription Agent `[Coming Soon]`
 
 - **Email Monitoring** — Forward subscription emails to an AgentMail inbox for automatic parsing
 - **Smart Analysis** — Claude extracts service name, price, billing cycle, and usage signals
@@ -39,33 +41,29 @@
 ```bash
 cd desktop-girl
 
-export ANTHROPIC_API_KEY=sk-ant-...
-
+# Compile
 swiftc -framework AppKit -framework SceneKit -framework Foundation \
-  -o desktop-girl main.swift
+  -framework IOKit -framework AVFoundation \
+  -o desktop-girl main.swift Config.swift ShellEnvironment.swift \
+  ClaudeSession.swift KeyableWindow.swift TerminalView.swift \
+  PetSCNView.swift AppDelegate.swift SlapDetector.swift ComicBubbleView.swift
 
+# Compile the accelerometer helper (for slap detection)
+swiftc -framework Foundation -framework IOKit -o accel-helper accel-helper.swift
+
+# Run
 ./desktop-girl ./model/foxgirl_new.usdz
 ```
 
-### Subscription Agent
+> **Note:** Slap detection requires the accelerometer helper to run with root privileges. Set it up with:
+> ```bash
+> sudo chown root accel-helper && sudo chmod 4755 accel-helper
+> ```
 
-```bash
-pip install -r requirements.txt
-```
+### Requirements
 
-Create a `.env` file with the following keys:
-
-```
-ANTHROPIC_API_KEY=sk-ant-...
-TELEGRAM_BOT_TOKEN=...
-TELEGRAM_CHAT_ID=...
-AGENTMAIL_API_KEY=...
-```
-
-```bash
-python main.py            # Watch mode — polls emails + Telegram bot
-python main.py --once     # Single check
-```
+- macOS 14.0+ with Apple Silicon
+- [Claude Code CLI](https://claude.ai/download) installed and logged in
 
 ## Controls
 
@@ -74,39 +72,58 @@ python main.py --once     # Single check
 | Move | Drag the model |
 | Rotate | Click model to focus, then two-finger scroll |
 | Zoom | Click model to focus, then pinch |
-| Chat | Click her head |
+| Chat | Double-click the model |
 | Close chat | `Esc` or click outside the chat window |
 | Unfocus | Click anywhere outside the model |
-
-## How the Agent Works
-
-1. **Detect** — You forward a subscription email to the AgentMail inbox
-2. **Parse** — Claude extracts service name, price, billing cycle, and usage signals
-3. **Alert** — Telegram sends you the analysis: *"Loom $12.5/mo — 0 videos in 4 weeks. Cancel?"*
-4. **Decide** — You tap Cancel, Keep, or Review
-5. **Execute** — Browser agent navigates the cancellation flow with screenshots at every step
-6. **Confirm** — You approve the final action before anything is cancelled
+| Slap | Physically slap your MacBook |
 
 ## Architecture
+
+```
+desktop-girl/
+├── main.swift              # App entry point
+├── Config.swift            # Character name and persona loader
+├── AppDelegate.swift       # Window, scene, events, popover, slap reaction
+├── PetSCNView.swift        # 3D view, drag/zoom/rotate, click detection
+├── TerminalView.swift      # Chat UI, markdown rendering, slash commands
+├── ClaudeSession.swift     # Claude Code CLI process management
+├── ShellEnvironment.swift  # Shell PATH resolution
+├── SlapDetector.swift      # Accelerometer helper launcher
+├── ComicBubbleView.swift   # Comic-style speech bubble
+├── accel-helper.swift      # Standalone accelerometer reader (runs as root)
+├── persona/                # Character personality files (editable .md)
+│   ├── identity.md
+│   ├── personality.md
+│   ├── preferences.md
+│   └── memory.md
+├── sounds/
+│   ├── slap/               # Slap reaction sound effects
+│   └── ping/               # Completion notification sounds
+└── model/
+    └── foxgirl_new.usdz    # 3D model
+```
 
 | Component | Technology |
 |:----------|:-----------|
 | 3D Rendering | SceneKit (macOS native) |
 | Desktop App | Swift + AppKit |
-| AI Chat | Claude Sonnet 4 |
-| Email Parsing | Claude Haiku |
-| Agent Framework | Claude tool-use loop |
-| Browser Automation | Playwright |
-| Email Ingestion | AgentMail |
-| User Notifications | Telegram Bot |
+| AI Terminal | Claude Code CLI (stream-json) |
+| Slap Detection | Apple Silicon accelerometer via IOKit HID |
+| Sound Effects | AVFoundation |
+| Character Persona | Editable markdown files |
 
-## Requirements
+## Roadmap
 
-- macOS 14.0+
-- [Anthropic API key](https://console.anthropic.com/)
-- For the subscription agent:
-  - Telegram Bot token
-  - AgentMail API key
+- [x] 3D desktop companion with gesture controls
+- [x] Claude Code terminal integration
+- [x] Slap detection with anime voice reactions
+- [x] Comic speech bubbles
+- [x] Thinking/completion bubbles
+- [ ] Subscription email monitoring (AgentMail)
+- [ ] Telegram notification with action buttons
+- [ ] Browser automation for cancellation flows
+- [ ] Custom sound pack support
+- [ ] Multiple character models
 
 ## License
 
