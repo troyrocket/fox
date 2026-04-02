@@ -34,36 +34,71 @@
 - **Browser Automation** — Playwright navigates cancellation flows with screenshots at every step
 - **Human in the Loop** — Every destructive action requires your explicit approval
 
-## Getting Started
+## Requirements
 
-### Desktop Companion
+- **macOS 14.0+** (Sonoma or later)
+- **Apple Silicon** (M1/M2/M3/M4) — required for slap detection
+- **Xcode Command Line Tools** — for the Swift compiler
 
 ```bash
-cd desktop-girl
+# Install if you don't have it
+xcode-select --install
+```
 
-# Compile
+**Optional for AI chat:**
+- [Claude Code CLI](https://claude.ai/download) — install and log in:
+```bash
+curl -fsSL https://claude.ai/install.sh | sh
+claude /login
+```
+
+## Getting Started
+
+### 1. Clone the repo
+
+```bash
+git clone https://github.com/troyrocket/desktop-fox.git
+cd desktop-fox/desktop-girl
+```
+
+### 2. Compile
+
+```bash
+# Build the main app
 swiftc -framework AppKit -framework SceneKit -framework Foundation \
   -framework IOKit -framework AVFoundation \
   -o desktop-girl main.swift Config.swift ShellEnvironment.swift \
   ClaudeSession.swift KeyableWindow.swift TerminalView.swift \
   PetSCNView.swift AppDelegate.swift SlapDetector.swift ComicBubbleView.swift
 
-# Compile the accelerometer helper (for slap detection)
+# Build the accelerometer helper (for slap detection)
 swiftc -framework Foundation -framework IOKit -o accel-helper accel-helper.swift
+```
 
-# Run
+### 3. Enable slap detection
+
+The accelerometer requires root privileges. Run this once:
+
+```bash
+sudo chown root accel-helper && sudo chmod 4755 accel-helper
+```
+
+### 4. Run
+
+```bash
 ./desktop-girl ./model/foxgirl_new.usdz
 ```
 
-> **Note:** Slap detection requires the accelerometer helper to run with root privileges. Set it up with:
-> ```bash
-> sudo chown root accel-helper && sudo chmod 4755 accel-helper
-> ```
+That's it. A 3D fox girl appears on your desktop. Slap your MacBook and she screams.
 
-### Requirements
+### What works without Claude Code CLI?
 
-- macOS 14.0+ with Apple Silicon
-- [Claude Code CLI](https://claude.ai/download) installed and logged in
+| Feature | Without CLI | With CLI |
+|:--------|:-----------|:---------|
+| 3D model on desktop | Yes | Yes |
+| Drag, zoom, rotate | Yes | Yes |
+| Slap → scream + bubble | Yes | Yes |
+| AI chat terminal | No | Yes |
 
 ## Controls
 
