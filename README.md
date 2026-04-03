@@ -27,7 +27,7 @@ She does three things:
 Most finance tools give you data. Fox gives you someone who cares about your money.
 
 <p align="center">
-  <img src="profile.png" alt="Fox" width="100%">
+  <img src="profile.png?v=2" alt="Fox" width="100%">
 </p>
 
 ## Features
