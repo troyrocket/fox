@@ -48,7 +48,7 @@ Most finance tools give you data. Fox gives you someone who cares about your mon
 - **Auto-Cancellation** — she navigates cancellation flows in the browser, with screenshots at every step
 - **Human in the Loop** — every destructive action requires your explicit approval
 
-### Trader `[Coming Soon]`
+### Trader
 
 - **Stocks & Crypto** — connect your brokerage and crypto wallets, she trades on your behalf
 - **Smart Execution** — she picks entries, sets stops, and manages positions so you don't have to
