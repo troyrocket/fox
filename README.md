@@ -34,7 +34,7 @@ Every action that touches your money requires your explicit approval. She'll sho
 
 ## Features
 
-### 🖥 3D Desktop Companion
+### 3D Desktop Companion
 
 Fox lives on your macOS desktop as a 3D character rendered in SceneKit. She floats transparently over your workspace — only she intercepts clicks, everything else passes through to your apps.
 
@@ -47,7 +47,7 @@ Fox lives on your macOS desktop as a 3D character rendered in SceneKit. She floa
 
 ---
 
-### 📈 Trader
+### Trader
 
 Fox trades on your behalf across prediction markets and stock brokerages. She uses Claude's Computer Use to navigate trading platforms in a real browser — the same way you would, but faster.
 
@@ -61,7 +61,7 @@ Fox trades on your behalf across prediction markets and stock brokerages. She us
 
 ---
 
-### 💸 Spending Manager
+### Spending Manager
 
 Fox monitors your email for subscription charges and helps you cancel the ones you don't need. She connects to your inbox via AgentMail and uses browser automation to handle cancellation flows end-to-end.
 
