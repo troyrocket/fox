@@ -73,8 +73,8 @@ claude /login
 ### 1. Clone
 
 ```bash
-git clone https://github.com/troyrocket/desktop-fox.git
-cd desktop-fox/desktop-girl
+git clone https://github.com/troyrocket/fox.git
+cd fox/desktop-girl
 ```
 
 ### 2. Build
